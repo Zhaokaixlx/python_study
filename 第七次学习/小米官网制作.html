@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小米官网</title>
+    <style type="text/css">
+        #menu {  /* 前边加#号就是用id来选择这个标签*/
+            background-color: yellow;
+            height: 80px;
+        }
+        #side_bar{
+            height: 500px;
+            width: 10%;
+            background-color: orange;
+            float: left;
+        }
+        #content_box{
+            height: 800px;
+            width: 90%;
+            background-color: greenyellow;
+            float: left;
+        }
+        #footer{
+            background-color: black;
+            height: 100px;
+            clear: both; /* 不再按浮动排列*/
+        }
+    </style>
+</head>
+<body>
+    <div id="menu" >
+        <p>首页 牛逼  赵凯  赵丽</p>
+        <p>电视</p>
+        <p>手机</p>
+        <p>路由器</p>
+        <p>电脑</p>
+    </div>
+
+    <div id="side_bar">
+        <ul>
+            <li>手机</li>
+            <li>电视</li>
+            <li>小家电
+    <ul>
+      <li>扫地机器人</li>
+      <li>智能汽车</li>
+    </ul>
+            </li>
+            <li>IOT</li>
+        </ul>
+    </div>
+    <div id="content_box">
+        <h2>大广告</h2>
+    </div>
+
+    <div id="footer">
+        <h3>footer...</h3>
+    </div>
+
+</body>
+</html>

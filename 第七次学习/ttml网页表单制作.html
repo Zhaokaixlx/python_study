@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        #hobbie {
+            background-color: red;
+        }
+
+        .class_test { /* 类选择器*/
+            /*background-color: greenyellow;*/
+            /*border: 2px dashed blueviolet;*/
+        }
+
+        input { /* 给所有的input标签加上样式 */
+            background-color: green;
+            font-family: "PingFang HK";
+            font-size: 16px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div>
+
+    <form action="/test/url/">
+        用户名：<input type="text" name="username"> <br>
+        爱好：<input id="hobbie" type="text" name="hobbie"> <br>
+        密码：<input type="password" name="password"><br>
+        年龄：<input class="class_test" type="number" name="age"><br>
+        出生日期：<input type="date"><br>
+
+        个人介绍：<br>
+        <textarea class="class_test"  cols="50" rows="5" placeholder="请输入不少于50字的个人介绍...."></textarea> <br>
+
+        Sex: <input type="radio">男 <input type="radio">女
+        <br>
+        <input type="submit" value="注册">
+
+        爱好：
+        <input type="checkbox" name="hob" value="girl"> girl
+        <input type="checkbox"  name="hob" value="car"> car
+        <input type="checkbox"  name="hob" value="diving"> 潜水
+        <input type="checkbox"  name="hob" value="python"> 编程
+
+
+         <fieldset>
+          <legend>Personalia:</legend>
+          Name: <input class="class_test" type="text"><br>
+          Email: <input class="class_test"  type="text"><br>
+          Date of birth: <input type="text">
+          喜欢的姑娘类型
+             <select name="favor_girl_type">
+                 <option value="1">胸大腿长貌美</option>
+                 <option value="2">小可爱</option>
+                 <option value="3">微胖</option>
+                 <optgroup label="区域">
+                     <option>欧美</option>
+                     <option>日韩</option>
+                     <option>河南开封</option>
+                 </optgroup>
+             </select>\
+         </fieldset>
+
+
+    </form>
+
+</div>
+
+</body>
+</html>
