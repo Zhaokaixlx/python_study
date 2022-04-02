@@ -186,3 +186,721 @@ plt.colormaps()
 # 图片的保存
 plt.savefig(r".\1.png")  # dpi 调整像素大小 可以保存pdf等等
 
+
+"""
+图片的风格和样式
+颜色、线性、点形、线宽、透明度
+
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+x = np.linspace(0,2*np.pi,100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+# 设置颜色 线性 点形
+plt.plot(x,y1,color = 'indigo',ls = '-.',marker = 'p')
+# rgb颜色表示 256 0 ~ 255
+# 0 、1、2……A、B、C、D、E、F
+plt.plot(x,y2,color = '#FF00EE',ls = '--',marker = 'o')
+plt.show()
+
+# 0 ~ 1之间
+plt.plot(x,y1 + y2,color = (0.2,0.7,0.2),marker = '*',ls = ':')
+
+plt.plot(x,y1 + 2*y2,linewidth = 5,alpha = 0.3,color = 'orange') # 线宽、透明度
+
+# b --- blue o marker圆圈， --虚线
+plt.plot(x,2*y1 - y2,'bo--') # 参数连用
+
+"""
+更多属性
+
+"""
+def f(x):
+    return np.exp(-x) * np.cos(2*np.pi*x)
+
+x = np.linspace(0,5,50)
+plt.figure(figsize=(9,6))
+
+
+# plot 参数
+plt.plot(x,f(x),color = 'purple',
+         marker = 'o', # marker
+         ls = '--', # 样式
+         lw = 2, # 线宽
+         alpha = 0.6,
+         markerfacecolor = 'red',# 点颜色
+         markersize = 10,# 点大小
+         markeredgecolor = 'green',#点边缘颜色
+         markeredgewidth = 3)#点边缘宽度
+
+
+plt.xticks(size = 18) # 设置刻度大小
+_ = plt.yticks(size = 18)
+
+
+
+
+"""
+多图布局
+
+
+"""
+x = np.linspace(0,2*np.pi)
+
+plt.figure(figsize=(9,6))
+# 创建子视图
+# 一个一个的创建
+# 2行，1列，1第一个图
+ax = plt.subplot(2,1,1)
+ax.plot(x,np.sin(x))
+
+# 后面这个2就是编号，从1，开始
+# 1,2,3,4
+# 5,6,7,8
+# 9,10,11,12
+ax = plt.subplot(2,1,2) # 2行，1列，第二个视图
+ax.plot(x, np.cos(x))
+
+# 一次性创建
+fig,axes = plt.subplots(2,2) # 四个图
+
+# 索引，0开始
+axes[0,0].plot(x,np.sin(x),color = 'red')
+
+axes[0,1].plot(x,np.sin(x),color = 'green')
+
+axes[1,0].plot(x,np.cos(x),color = 'purple')
+
+axes[1,1].plot(x,np.cos(x))
+plt.show()
+
+
+
+"""
+不均匀分布
+
+"""
+x = np.linspace(-np.pi,np.pi,20)
+y = np.sin(x)
+
+# 子视图1
+plt.figure(figsize=(9,6))
+ax = plt.subplot(221) # 两行两列第一个子视图
+ax.plot(x,y,color = 'red')
+ax.set_facecolor('green') # 调用子视图设置方法，设置子视图整体属性
+
+
+# 子视图2
+ax = plt.subplot(2,2,2) # 两行两列第二个子视图
+line, = ax.plot(x,-y) # 返回绘制对象,列表中只有一个数据，取出来
+line
+line.set_marker('*') # 调用对象设置方法，设置属性
+line.set_markerfacecolor('red')
+line.set_markeredgecolor('green')
+line.set_markersize(10)
+
+
+# 子视图3
+ax = plt.subplot(2,1,2) # 两行一列第二行视图
+
+plt.sca(ax) # 设置当前视图
+
+x = np.linspace(-np.pi,np.pi,200)
+
+# 直接调用plt
+plt.plot(x,np.sin(x*x),color = 'red')
+plt.show()
+
+
+
+"""
+双轴显示
+
+"""
+x = np.linspace(-np.pi, np.pi,50)
+
+y = np.sin(x)
+
+plt.plot(x,y,color = 'blue')
+_ = plt.yticks(np.linspace(-1,1,11),color = 'blue')
+ax = plt.gca()# 获取当前视图
+# twinx(共用x轴) 请问是否有twiny呢？  有的话，就是双轴
+ax2 = ax.twinx() # 双胞胎，两个X轴，合道一起的，两个X轴，对应着两个Y轴
+# 其中一个视图，纵坐标范围：-1~1.0
+# 另一个视图，范围 0 ~ 25
+# 刻度会自适应
+y2 = np.exp(x)
+plt.plot(x,y2,color = 'red') # 默认向ax2这个子视图中绘制
+_ = plt.yticks(np.arange(0,26,5),color = 'red')
+
+
+
+"""
+文本  注释  箭头
+text()  -- 在axes对象的任意位置添加文字
+xlabel()  --为x轴添加标签
+ylabel()  --为y轴添加标签
+title() --为axes添加标题
+legend()  --为axes添加图例
+annotate()  --为axes添加注释
+figtext() --在figure 对象的任意位置添加文字
+suptitle()  -- 为figure 对象的添加中心化的标题
+"""
+# 字体属性
+font = {'fontsize': 20,
+        'family': 'STKaiti',
+        'color':  'red',
+        'weight': 'bold'} # 字体加粗
+
+x = np.linspace(0.0, 5.0, 100)
+y = np.cos(2*np.pi*x) * np.exp(-x)
+
+plt.figure(figsize=(9,6))
+plt.plot(x, y, 'g')
+
+# 视图的标题，小标题
+# 如何设置中文字体
+from matplotlib import font_manager
+
+fm = font_manager.FontManager()
+plt.rcParams['font.family'] = 'KaiTi' # 设置中文字体
+plt.title('指数级衰减',fontdict=font,pad = 20)
+
+
+# figure的大标题，大标题
+plt.suptitle('指数衰减',y = 1.05,fontdict = font,fontsize = 30)
+plt.show()
+
+
+plt.text(x = 2, y = 0.65, # 横纵坐标位置
+         s = r'$\cos(2 \pi x) \exp(-x)$',fontdict=font) # 文本内容
+
+
+plt.text(x = 2,y = -0.4,s = 'Hello World!')
+
+plt.xlabel('time (s)')
+plt.ylabel('voltage (mV)')
+plt.show()
+
+"""
+箭头
+
+"""
+# 随机生成数字 10行2列（x,y）
+loc = np.random.randint(0,10,size = (10,2))
+#print(loc)
+
+plt.figure(figsize=(3, 3))
+
+# 画图，所有行，都获取，索引0---->横坐标
+# 所有行，都获取，索引1---->纵坐标
+plt.plot(loc[:,0], loc[:,1], 'gh', ms=20)
+# plt.show()
+
+plt.grid(True)
+# plt.show()
+# 路径
+way = np.arange(10) # 0、1、2…、9索引
+print(way)
+
+np.random.shuffle(way) # 洗牌，打乱顺序
+print(way)
+
+# 10个点，连9条线
+for i in range(0, 9): # for循环遍历，少一个，最后一个特殊
+    start = loc[way[i]] # 起点
+    end = loc[way[i+1]] # 终点
+
+    plt.arrow(x = start[0], y = start[1], # 箭头起点
+              dx = end[0]-start[0], dy = end[1]-start[1], # 坐标移动位置
+              head_width=0.2, lw=2,#箭头长度，箭尾线宽
+              length_includes_head = True) # 长度计算包含箭头箭尾
+
+    plt.text(start[0],start[1],s = i,fontsize = 18,color = 'red') # 文本
+    if i == len(way) -2: # 最后一个点
+        plt.text(end[0],end[1],s = i + 1,fontsize = 18,color = 'red')
+
+        start = loc[way[-1]] # 最后一个点
+        end = loc[way[0]] # 起点，对应着0点
+
+        plt.arrow(x = start[0], y = start[1], # 箭头起点
+              dx = end[0]-start[0], dy = end[1]-start[1], # 坐标移动位置
+              head_width=0.2, lw=2,#箭头长度，箭尾线宽
+              length_includes_head = True,color = 'red') # 长度计算包含箭头箭尾
+plt.show()
+
+
+"""
+注释
+
+"""
+fig, ax = plt.subplots()
+
+x = np.arange(0.0, 5.0, 0.01)
+y = np.cos(2*np.pi*x)
+
+line, = ax.plot(x,y,lw=2)
+
+# 设置中文字体
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
+# 注释
+ax.annotate('最大值', # 文本内容
+            xy=(2, 1),  # 箭头指向位置
+            xytext=(3, 1.5), # 文本位置
+            arrowprops=dict(facecolor='black', shrink=0.05)) # 箭头模样
+ax.set_ylim(-2, 2)
+# plt.show()
+
+
+ax.annotate('最小值',
+            xy = (2.5,-1),
+            xytext = (4,-1.8),
+            arrowprops = dict(facecolor = 'green',
+                              width = 2, # 箭头宽度
+                              headwidth = 10,# 箭头头部宽度
+                              headlength = 10, # 箭头头部长度
+                              shrink = 0.05)) # 箭头两端收缩的百分比（占总长）
+ax.annotate('median',
+            xy = (2.25,0),
+            xytext = (0.5,-1.8),
+            arrowprops = dict(arrowstyle = '-|>'), # 箭头样式
+            fontsize = 20)
+
+ax.set_ylim(-2, 2) # y轴范围调宽
+plt.show()
+
+
+"""
+多种视图
+
+"""
+y = np.random.randint(0,10,size = 15)
+
+# 一图多线
+plt.figure(figsize=(9,6))
+# 只给了x
+plt.plot(y, marker = '*', color = 'r')
+plt.plot(y.cumsum(), marker = 'o')
+
+x = np.arange(0,10,0.1)
+# 多图布局
+fig,axs = plt.subplots(2,1)
+# 设置宽高
+fig.set_figwidth(9)
+fig.set_figheight(6)
+
+axs[0].plot(x,marker = '*',color = 'red')
+axs[1].plot(x.cumsum(),marker = 'o')
+plt.show()
+
+
+"""
+柱状图
+
+"""
+labels = ['G1', 'G2', 'G3', 'G4', 'G5','G6'] # 级别
+
+men_means = np.random.randint(20,35,size = 6)
+women_means = np.random.randint(20,35,size = 6)
+men_std = np.random.randint(1,7,size = 6)
+women_std = np.random.randint(1,7,size = 6)
+
+width = 0.5
+plt.bar(labels, # 横坐标
+        men_means, # 柱高
+        width, # 线宽
+        yerr=men_std, # 误差条
+        label='Men')#标签
+
+
+plt.bar(labels, women_means, width, yerr=women_std,
+        bottom=men_means, # 条形图，绘制时，落在原来的图上去
+       label='Women')
+
+plt.ylabel('Scores')
+plt.title('Scores by group and gender')
+plt.legend()
+plt.show()
+
+
+
+"""
+柱状图
+
+"""
+boy = np.random.randint(20,35,size = 6)
+girl = np.random.randint(20,35,size = 6)
+
+labels = ['G1','G2','G3','G4','G5','G5']
+plt.figure(figsize=(9,6))
+x = np.arange(6)
+
+width = 0.3
+plt.bar(x - width/2,boy,width = width)
+plt.bar(x + width/2,girl,width = width)
+
+plt.legend(['Boy','Girl'])
+plt.xticks(x,labels,fontsize = 20)
+
+# 放置文本 text
+for i in range(6):
+    s1 = boy[i]
+    plt.text(x = i - 0.15,y = s1 + 1,s = s1,ha = 'center')
+    s2 = girl[i]
+    plt.text(x = i + 0.15,y = s2 + 1,s = s2,ha = 'center')
+
+plt.ylim(0,40)
+
+
+
+"""
+极坐标
+
+"""
+
+# 线性极坐标
+x = np.linspace(0,4* np.pi,200)
+y = np.linspace(0,2,200)
+
+ax = plt.subplot(111,projection = 'polar',facecolor = 'lightgreen')
+ax.plot(x,y)
+
+# 设置
+ax.set_rmax(3)
+
+ax.set_rticks([0.5,1,1.5,2])
+ax.grid(True)
+
+
+# 条形极坐标
+
+N = 8 # 分成8份（0 到 360）
+x = np.linspace(0, 2 * np.pi, N, endpoint=False)
+
+# 纵坐标
+y = np.random.randint(3,15,size = N)
+
+# 宽度，8个柱子沾满圆
+width = np.pi / 4
+
+# 颜色，0到1
+colors = np.random.rand(8,3) # 随机生成颜色
+
+# 创建极坐标
+ax = plt.subplot(111,projection = 'polar') # polar表示极坐标
+
+# 绘制条形图
+plt.bar(x, y, width=width,color = colors)
+
+
+"""
+直方图
+
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+mu = 100 # 平均值
+sigma = 15 # 标准差
+# 10000个数据
+x = np.random.normal(loc = mu,scale = 15,size = 10000)
+fig, ax = plt.subplots()
+
+
+# 描述统计性的数据
+# 数据量比较大，通过绘制直方图，看出数据内部关系
+# 将数据分成200份
+# density=False 统计数字在某个范围内的次数
+# density= True，概率
+n, bins, patches = ax.hist(x, 1000, density=False,rwidth=0.8) # 直方图
+plt.show()
+
+
+
+"""
+箱型图
+
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+data=np.random.normal(size=(500,4)) # 正太分布
+
+lables = ['A','B','C','D']
+# 用Matplotlib画箱线图
+
+# 黄色线，中位数
+# 查看数据分布情况，看异常值
+_ = plt.boxplot(data,1,'ro',labels=lables) # 红色的圆点是异常值
+plt.show()
+
+
+
+"""
+散点图
+
+"""
+data = np.random.randn(100,2)
+
+s = np.random.randint(100,300,size = 100)
+color = np.random.randn(100)
+
+plt.scatter(data[:,0], # 横坐标
+            data[:,1], # 纵坐标
+            s = s, # 尺寸
+            c = color, # 颜色
+            alpha = 0.5) # 透明度
+plt.show()
+
+
+
+"""
+饼图
+：展示数据的比例
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+# 解决中文字体乱码的问题
+plt.rcParams['font.sans-serif']='STKaiti'
+
+labels =["五星","四星","三星","二星","一星"] # 标签
+percent = [95,261,105,30,9] # 某市星级酒店数量
+
+# 设置图片大小和分辨率
+fig=plt.figure(figsize=(5,5), dpi=120)
+
+# 偏移中心量，突出某一部分
+# 0.1 表示 10%，自身高度的10%，相对值
+explode = (0.2, 0, 0, 0, 0)
+# 绘制饼图：autopct显示百分比，这里保留一位小数；shadow控制是否显示阴影
+
+_ = plt.pie(x = percent,labels=labels,autopct='%0.1f%%',
+            explode = explode,shadow=True) # 数据 # 阴影，3D效果
+plt.show()
+
+
+
+
+"""
+热力图
+
+"""
+# 标签
+vegetables = ["cucumber", "tomato", "lettuce", "asparagus","potato", "wheat", "barley"]
+farmers = list('ABCDEFG')
+
+# 创造数据，随机数
+harvest = np.random.randn(7,7)*5 # 农民丰收数据
+
+plt.rcParams['font.size'] = 18
+plt.rcParams['font.weight'] = 'heavy'
+
+plt.figure(figsize=(6,6))
+
+# imshow，显示图片
+im = plt.imshow(harvest,cmap = 'PuBu')# 因为数值，各不相同
+
+# 绘制文本
+for i in range(len(vegetables)):
+    for j in range(len(farmers)):
+        text = plt.text(j, i, round(harvest[i, j],1),
+                       ha="center", va="center", color='r')
+plt.show*()
+
+plt.colormaps()
+
+
+
+
+"""
+蜘蛛图
+
+"""
+
+
+
+
+plt.rcParams['font.family'] = 'STKaiti'
+labels=np.array(["个人能力","IQ","服务意识","团队精神","解决问题能力","持续学习"])
+y=[83, 61, 95, 67, 76, 88]
+
+# 画图数据准备，角度、状态值
+x = np.linspace(0, 2*np.pi, len(labels), endpoint=False)
+
+y = np.concatenate([y,[y[0]]]) # 首尾相接
+x = np.concatenate([x,[x[0]]]) # 增加
+print(y)
+
+# 用Matplotlib画蜘蛛图
+fig = plt.figure(figsize=(6,6))
+ax = fig.add_subplot(111, polar=True)
+
+# o表示形状，圆形
+# -实线
+# o-属性连用
+ax.plot(x, y, 'r*--', linewidth=2,markersize = 30) # 连线
+ax.fill(x,y,alpha = 0.2)
+
+# x = 3.14 ---> 180
+# 标签显示，去掉一个
+_ = ax.set_thetagrids(x[:-1] * 180/np.pi,
+                  labels,
+                  fontsize = 18)
+plt.show()
+
+
+
+
+"""
+3D图形
+
+"""
+"""
+线型图&散点图
+
+"""
+from mpl_toolkits.mplot3d.axes3d import Axes3D
+
+x = np.linspace(0,60,300)
+y = np.sin(x)
+z = np.cos(x)
+
+# fig = plt.figure(figsize=(9,6))
+# a3 = Axes3D(fig) # 二维变成3D
+# a3.plot(x,y,z)
+plt.figure(figsize=(9,6))
+a3 = plt.subplot(111,projection = '3d')
+a3.plot(x,y,z) # 普通线形图
+a3.set_xlabel('X')
+a3.set_ylabel('Y')
+a3.set_zlabel('Z')
+plt.show()
+
+
+# 散点图
+x = np.random.randint(0,60,size = 20)
+y = np.random.randn(20)
+z = np.random.randn(20)
+a3.scatter(x,y,z,color= 'red')
+# 调整视图的角度
+a3.view_init(elev = 20,azim=-30)
+
+plt.show()
+
+
+
+"""
+3D条形图
+
+"""
+import warnings
+warnings.filterwarnings('ignore')
+
+from  mpl_toolkits.mplot3d.axes3d import Axes3D # 3D引擎
+month = np.arange(1,5)
+# 每个月 4周 每周都会产生数据
+# 三个维度：月、周、销量
+fig = plt.figure(figsize=(9,6))
+ax3 = Axes3D(fig)
+
+for m in month:
+    # 每个月都要绘制条形图
+    ax3.bar(np.arange(1,5), # 理解成横坐标
+            np.random.randint(1,10,size = 4), # 纵坐标
+            zs = m ,
+            zdir = 'x',# 在哪个方向上，一排排排列
+            alpha = 0.7,# alpha 透明度
+            width = 0.5)
+
+
+ax3.set_xlabel('月份',fontsize = 18,color = 'red')
+ax3.set_xticks(month)
+ax3.set_ylabel('周',fontsize = 18,color = 'red')
+ax3.set_yticks([1,2,3,4])
+ax3.set_zlabel('销量',fontsize = 18,color = 'green')
+plt.show()
+
+
+
+"""
+seaborn快速入门
+"""
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+sns.set(style = 'ticks',context = 'paper',font = 'STKaiti') # 设置样式
+
+plt.figure(figsize=(9,6))
+
+
+x = np.linspace(0,2*np.pi,20)
+y = np.sin(x)
+
+# lineplot方法，画一条线
+sns.lineplot(x = x,y = y,color = 'green',ls = '--')
+sns.lineplot(x = x,y = np.cos(x),color = 'red',ls = '-.')
+
+
+"""
+线型图
+
+"""
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+sns.set(style = 'dark',context = 'notebook',font = 'STKaiti') # 设置样式
+plt.figure(figsize=(9,6))
+
+# 加载数据
+fmri = pd.read_csv(r"D:\python_course\a60b7231db7c4333a59bfacd94e959dc\代码\fmri.csv") # fmri这一核磁共振数据
+
+ax = sns.lineplot(x = 'timepoint',y = 'signal',
+                  hue = 'event',# 根据event属性分类，绘制
+                  style = 'event' ,# 根据event属性分类，指定样式
+                  data= fmri,
+                  palette='ocean', # 画板，颜色
+                  markers=True,
+                  markersize = 10)
+
+plt.xlabel('时间节点',fontsize = 30)
+
+fmri['event'].unique() # 查看event属性的唯一值
+fmri.head()
+
+
+"""
+热力图
+
+"""
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.figure(figsize=(12,9))
+flights = pd.read_csv(r"D:\python_course\a60b7231db7c4333a59bfacd94e959dc\代码\flights.csv") # 飞行数据
+# !!! pivot数据重塑，改变DataFrame形状
+flights = flights.pivot("month", "year", "passengers") # 年，月份，飞机乘客数量
+
+sns.heatmap(flights, annot=True,fmt = 'd',cmap = 'RdBu_r',linewidths=5)
+
+
+"""
+条形图
+
+"""
+import seaborn as sns
+import matplotlib.pyplot as plt
+plt.figure(figsize = (9,6))
+sns.set(style = 'whitegrid')
+tips = pd.read_csv(r"D:\python_course\a60b7231db7c4333a59bfacd94e959dc\代码\tips.csv") # 小费
+
+ax = sns.barplot(x = "total_bill", y = "day",
+                 data = tips,
+                 palette = 'colorblind'
+                 ,orient='h')
+
